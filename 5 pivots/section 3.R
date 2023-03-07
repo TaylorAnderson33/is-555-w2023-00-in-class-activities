@@ -11,7 +11,7 @@
 #   data,                             <-- The incoming tibble, usually comes in via a pipe
 #   **cols,                             <-- This is where you say which columns you're pulling down to long format
 #                                           (any that you don't name here are assumed to be "id columns" that 
-#                                           will repeat with eachof the variables being converted to long format)
+#                                           will repeat with each of the variables being converted to long format)
 #   **names_to = "name",                <-- This is the column name that will "house" the column names that you have 
 #                                           specified in the `cols` parameter. Often you can just leave this as the 
 #                                           default and it will name it "name", but you can also be more descriptive

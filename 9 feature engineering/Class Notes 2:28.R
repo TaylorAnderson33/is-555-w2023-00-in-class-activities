@@ -68,48 +68,20 @@ outlier_candidates <- c('age', 'sib_sp', 'parch', 'fare')
 
 # Pass the four columns to summary() to check means, maxes
 
-df %>% 
-  select(where(is.numeric)) # filters for different data types
-
-df %>% 
-  select(all_of(outlier_candidates)) %>% 
-  summary()
 
 # calculate extreme threshold caps based on 99th percentile
-
-  # Each of these r functions returns a named vector
-age_cap <- quantile(df$age, .99) # what portion of the population that we want to evaluate
-sib_sp_cap <- quantile(df$sib_sp, .99)
-parch_cap <- quantile(df$parch, .99)
-fare_cap <- quantile(df$fare, .99)
-
-
 
 
 # Optional: Create a tibble for easy comparison:
 
 # Now check how many are beyond the percentile caps
-df %>%
-  summarize(age_beyond_cap = sum(age > age_cap),
-            sib_sp_beyond_cap = sum(sib_sp > sib_sp_cap),
-            parch_beyond_cap = sum(parch > parch_cap),
-            fare_beyond_cap = sum(fare > fare_cap))
+
 
 # cap age and fare, and check work before saving
-df <- df %>% 
-  mutate(age = if_else(age > age_cap, age_cap, age),
-         fare = if_else(fare > fare_cap, fare_cap, fare))
-  select(age, fare) %>% 
-  summary()
 
 
-# save the result to df done above
-df %>%
- ggplot(aes(x = age)) +
- geom_histogram()
-df %>% 
-  ggplot(aes(x = fare)) +
-  geom_histogram()
+# save the result to df
+
 
 
 
@@ -151,20 +123,11 @@ df %>%
     fare_th  = fare^(1/2),
     fare_t1  = fare^1,
     fare_t2  = fare^2
-  ) %>% 
-  select(starts_with('fare_')) %>% 
-  pivot_longer(everything()) %>% 
-  ggplot(aes(x = value, fill = name)) +
-  geom_density(alpha = .4)+ 
-  facet_wrap(~name, scales = 'free', ncol = 1)
+  ) 
+
 # now let's visualize the effect of the transformations to see 
 # which one makes sense.
 
-df %>% 
-  mutate(fare =fare^-(1/2)) # Mutate all values with chosen adjustment
 
-df %>%
-  select(c(age, sib_sp, parch, fare)) %>% 
-  mutate(across(c(age, sib_sp, parch, fare)~as.numeric(.x))) # applies a little bit of logic to scale to z vector
 
 
